@@ -1,49 +1,60 @@
 """
-VHQ GROWTHLINE — app.py
-Phase 1 · Core Matrix
-Modules: AI Script Engine · PV Dashboard · 6-Month Blueprint · Settings
+VHQ GROWTHLINE — Vestige Edition
+Phase 1 · Core Matrix (Brand Overhaul + Product Consulting Engine)
+Deep Blue corporate theme · Teal accents · Gold highlights
 """
 
 import streamlit as st
-from datetime import date
 
 # ═══════════════════════════════════════════════════════════════
 # PAGE CONFIG
 # ═══════════════════════════════════════════════════════════════
 st.set_page_config(
-    page_title="VHQ · GrowthLine",
+    page_title="VHQ GrowthLine · Vestige Edition",
     page_icon="◈",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
 
 # ═══════════════════════════════════════════════════════════════
-# DESIGN SYSTEM
+# DESIGN SYSTEM — VESTIGE CORPORATE BRAND
+# Deep Blue #0F172A · Teal #0D9488 · Gold #CA8A04 · White #F1F5F9
 # ═══════════════════════════════════════════════════════════════
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
+/* ── Base ── */
 html, body, [class*="css"] {
-  font-family: 'Space Grotesk', sans-serif;
-  background: #04040A;
-  color: #E8E6F0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(145deg, #0A0F1E 0%, #0F172A 50%, #0C1526 100%);
+  color: #E2E8F0;
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 #MainMenu, footer, header { visibility: hidden; }
-.block-container { padding: 0 0.9rem 5rem 0.9rem; max-width: 700px; margin: auto; }
+.block-container {
+  padding: 0 0.9rem 5rem 0.9rem;
+  max-width: 720px; margin: auto;
+}
 
 /* ── Animations ── */
-@keyframes neonPulse {
+@keyframes corporatePulse {
   0%,100% {
-    text-shadow: 0 0 6px #fff, 0 0 20px #34d399, 0 0 40px #059669,
-      0 0 80px #059669, 0 2px 0 #064e3b, 0 4px 0 #022c22,
-      0 6px 10px rgba(0,0,0,0.7);
+    text-shadow:
+      0 0 8px rgba(13,148,136,0.6),
+      0 0 24px rgba(13,148,136,0.35),
+      0 3px 0 rgba(7,89,82,0.8),
+      0 5px 0 rgba(4,55,51,0.6),
+      0 8px 16px rgba(0,0,0,0.6);
   }
   50% {
-    text-shadow: 0 0 10px #fff, 0 0 30px #6ee7b7, 0 0 60px #34d399,
-      0 0 100px #059669, 0 2px 0 #064e3b, 0 4px 0 #022c22,
-      0 6px 16px rgba(0,0,0,0.8);
+    text-shadow:
+      0 0 12px rgba(45,212,191,0.7),
+      0 0 36px rgba(13,148,136,0.45),
+      0 3px 0 rgba(7,89,82,0.9),
+      0 5px 0 rgba(4,55,51,0.7),
+      0 8px 20px rgba(0,0,0,0.7);
   }
 }
 @keyframes scanH {
@@ -51,394 +62,591 @@ html, body, [class*="css"] {
   100% { transform: translateX(100vw); }
 }
 @keyframes fadeUp {
-  from { opacity:0; transform:translateY(14px); }
+  from { opacity:0; transform:translateY(12px); }
   to   { opacity:1; transform:translateY(0); }
 }
 @keyframes fadeDown {
-  from { opacity:0; transform:translateY(-14px); }
+  from { opacity:0; transform:translateY(-12px); }
   to   { opacity:1; transform:translateY(0); }
 }
-@keyframes glowGreen {
-  0%,100% { box-shadow: 0 0 8px rgba(52,211,153,0.3), inset 0 0 6px rgba(52,211,153,0.04); }
-  50%     { box-shadow: 0 0 20px rgba(52,211,153,0.45), inset 0 0 10px rgba(52,211,153,0.07); }
+@keyframes glowTeal {
+  0%,100% { box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(13,148,136,0.15); }
+  50%     { box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(13,148,136,0.3); }
 }
 @keyframes shimmer {
   0%  { background-position: -200% center; }
   100%{ background-position:  200% center; }
 }
+@keyframes barFill { from { width:0; } }
 @keyframes pop {
   0%  { transform:scale(0.85); opacity:0; }
-  60% { transform:scale(1.06); }
+  65% { transform:scale(1.04); }
   100%{ transform:scale(1);    opacity:1; }
 }
-@keyframes progressFill {
-  from { width: 0; }
-}
 
-/* ── Header ── */
-.gl-header {
+/* ══════════════════════════════════════
+   CORPORATE HEADER
+══════════════════════════════════════ */
+.vhq-header {
   position: relative; text-align: center;
-  padding: 2.6rem 1rem 1.9rem; overflow: hidden;
-  animation: fadeDown 0.7s ease both;
+  padding: 3rem 1rem 2.2rem; overflow: hidden;
+  animation: fadeDown 0.65s ease both;
+  border-bottom: 1px solid rgba(13,148,136,0.2);
+  margin-bottom: 0.5rem;
 }
-.gl-header::before {
+.vhq-header::before {
   content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background: linear-gradient(90deg,transparent,rgba(52,211,153,0.7),transparent);
+  background: linear-gradient(90deg,transparent,rgba(45,212,191,0.6),transparent);
   animation: scanH 5s linear infinite;
 }
-.gl-header::after {
-  content:''; position:absolute; bottom:0; left:8%; right:8%; height:1px;
-  background: linear-gradient(90deg,transparent,rgba(5,150,105,0.5),transparent);
-}
-.gl-eyebrow {
-  font-family:'IBM Plex Mono',monospace; font-size:0.62rem;
-  letter-spacing:0.28em; text-transform:uppercase;
-  color:rgba(52,211,153,0.6); margin-bottom:0.75rem;
-  animation: fadeDown 0.6s ease 0.1s both;
-}
-.gl-logo {
-  font-family:'Orbitron',monospace; font-weight:900;
-  font-size:clamp(1.5rem,5.5vw,2.3rem); letter-spacing:0.08em;
-  color:#fff; line-height:1.15; user-select:none;
-  animation: neonPulse 3.5s ease-in-out infinite, fadeDown 0.7s ease 0.15s both;
-}
-.gl-tagline {
-  font-family:'IBM Plex Mono',monospace; font-size:0.68rem;
-  color:rgba(52,211,153,0.5); letter-spacing:0.07em; margin-top:0.6rem;
-  animation: fadeDown 0.7s ease 0.3s both;
-}
-.gl-badge {
-  display:inline-block; background:rgba(5,150,105,0.14);
-  border:1px solid rgba(52,211,153,0.3); color:#34d399;
+.vhq-eyebrow {
   font-family:'IBM Plex Mono',monospace; font-size:0.6rem;
-  letter-spacing:0.14em; padding:0.2rem 0.8rem; border-radius:20px;
-  margin-top:0.65rem; animation: pop 0.5s ease 0.5s both;
+  letter-spacing:0.28em; text-transform:uppercase;
+  color:rgba(45,212,191,0.6); margin-bottom:0.7rem;
 }
+.vhq-logo {
+  font-family:'Orbitron',monospace; font-weight:900;
+  font-size:clamp(1.35rem,5vw,2.1rem); letter-spacing:0.07em;
+  color:#F1F5F9; line-height:1.2; user-select:none;
+  animation: corporatePulse 4s ease-in-out infinite;
+}
+.vhq-sub {
+  font-family:'IBM Plex Mono',monospace; font-size:0.65rem;
+  color:rgba(203,213,225,0.5); letter-spacing:0.1em;
+  margin-top:0.15rem;
+}
+.vhq-tagline {
+  font-size:0.8rem; color:rgba(148,163,184,0.65);
+  margin-top:0.6rem; line-height:1.5;
+}
+.vhq-badges { margin-top:0.8rem; display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; }
+.vhq-badge {
+  display:inline-block; font-family:'IBM Plex Mono',monospace;
+  font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase;
+  padding:0.2rem 0.75rem; border-radius:20px;
+  animation: pop 0.5s ease 0.4s both;
+}
+.badge-teal  { background:rgba(13,148,136,0.15); border:1px solid rgba(13,148,136,0.35); color:#2DD4BF; }
+.badge-gold  { background:rgba(202,138,4,0.12);  border:1px solid rgba(202,138,4,0.35);  color:#FCD34D; }
+.badge-slate { background:rgba(71,85,105,0.2);   border:1px solid rgba(71,85,105,0.4);   color:#94A3B8; }
 
-/* ── Glass cards ── */
+/* ══════════════════════════════════════
+   GLASS CARDS
+══════════════════════════════════════ */
 .gc {
-  background: rgba(255,255,255,0.025);
-  backdrop-filter: blur(18px); -webkit-backdrop-filter:blur(18px);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 18px; padding: 1.6rem 1.4rem;
-  margin-bottom: 1rem; position: relative; overflow: hidden;
-  animation: glowGreen 4s ease-in-out infinite, fadeUp 0.45s ease both;
+  background: rgba(15,23,42,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter:blur(20px);
+  border: 1px solid rgba(51,65,85,0.5);
+  border-radius: 16px; padding:1.6rem 1.4rem;
+  margin-bottom:1rem; position:relative; overflow:hidden;
+  animation: glowTeal 5s ease-in-out infinite, fadeUp 0.4s ease both;
 }
 .gc::before {
-  content:''; position:absolute; top:0; left:12%; right:12%; height:1px;
-  background:linear-gradient(90deg,transparent,rgba(52,211,153,0.3),transparent);
+  content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(13,148,136,0.4),transparent);
 }
 .gc-label {
-  font-family:'IBM Plex Mono',monospace; font-size:0.6rem;
+  font-family:'IBM Plex Mono',monospace; font-size:0.58rem;
   letter-spacing:0.18em; text-transform:uppercase;
-  color:rgba(5,150,105,0.85); margin-bottom:0.9rem;
+  color:rgba(13,148,136,0.8); margin-bottom:0.9rem;
 }
 
-/* ── Inputs ── */
+/* gold-border variant for active metric cards */
+.gc-gold {
+  background:rgba(15,23,42,0.65);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(202,138,4,0.35);
+  border-radius:16px; padding:1.4rem 1.3rem;
+  margin-bottom:1rem; position:relative; overflow:hidden;
+  box-shadow:0 0 20px rgba(202,138,4,0.08);
+}
+.gc-gold::before {
+  content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(202,138,4,0.45),transparent);
+}
+
+/* ══════════════════════════════════════
+   INPUTS
+══════════════════════════════════════ */
 .stTextInput>div>div>input,
 .stTextArea>div>div>textarea,
 .stSelectbox>div>div,
 .stNumberInput>div>div>input {
-  background:rgba(255,255,255,0.035) !important;
-  border:1px solid rgba(52,211,153,0.25) !important;
-  border-radius:10px !important; color:#E8E6F0 !important;
-  font-family:'Space Grotesk',sans-serif !important; font-size:0.9rem !important;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  background:rgba(30,41,59,0.7) !important;
+  border:1px solid rgba(51,65,85,0.7) !important;
+  border-radius:10px !important; color:#E2E8F0 !important;
+  font-family:'Inter',sans-serif !important; font-size:0.9rem !important;
+  transition:border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 .stTextInput>div>div>input:focus,
-.stTextArea>div>div>textarea:focus {
-  border-color:#34d399 !important;
-  box-shadow:0 0 0 3px rgba(52,211,153,0.14) !important;
+.stTextArea>div>div>textarea:focus,
+.stNumberInput>div>div>input:focus {
+  border-color:#0D9488 !important;
+  box-shadow:0 0 0 3px rgba(13,148,136,0.18) !important;
 }
-label { color:rgba(52,211,153,0.7) !important; font-size:0.79rem !important; font-weight:500 !important; letter-spacing:0.03em !important; }
+label {
+  color:rgba(148,163,184,0.85) !important;
+  font-size:0.78rem !important; font-weight:500 !important;
+  letter-spacing:0.02em !important;
+}
 
-/* ── Buttons ── */
+/* ══════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════ */
 .stButton>button[kind="primary"] {
   width:100%;
-  background:linear-gradient(135deg,#059669 0%,#34d399 50%,#059669 100%) !important;
-  background-size:200% auto !important; color:#000 !important;
-  border:none !important; border-radius:12px !important;
-  font-family:'Space Grotesk',sans-serif !important;
-  font-weight:700 !important; font-size:0.93rem !important;
-  padding:0.72rem 1.2rem !important; letter-spacing:0.04em !important;
-  box-shadow:0 4px 20px rgba(5,150,105,0.35) !important;
-  transition:background-position 0.4s ease, transform 0.15s ease, box-shadow 0.2s ease !important;
+  background:linear-gradient(135deg,#0D9488 0%,#14B8A6 50%,#0D9488 100%) !important;
+  background-size:200% auto !important; color:#fff !important;
+  border:none !important; border-radius:10px !important;
+  font-family:'Inter',sans-serif !important; font-weight:700 !important;
+  font-size:0.9rem !important; padding:0.7rem 1.1rem !important;
+  letter-spacing:0.03em !important;
+  box-shadow:0 4px 18px rgba(13,148,136,0.3) !important;
+  transition:background-position 0.4s ease,transform 0.15s ease,box-shadow 0.2s ease !important;
 }
 .stButton>button[kind="primary"]:hover {
   background-position:right center !important;
   transform:translateY(-1px) !important;
-  box-shadow:0 6px 28px rgba(52,211,153,0.45) !important;
+  box-shadow:0 6px 24px rgba(13,148,136,0.45) !important;
 }
 .stButton>button[kind="secondary"] {
-  width:100%; background:rgba(255,255,255,0.03) !important;
-  color:rgba(52,211,153,0.8) !important;
-  border:1px solid rgba(52,211,153,0.25) !important;
-  border-radius:12px !important;
-  font-family:'Space Grotesk',sans-serif !important; font-size:0.87rem !important;
+  width:100%; background:rgba(30,41,59,0.6) !important;
+  color:rgba(148,163,184,0.85) !important;
+  border:1px solid rgba(51,65,85,0.6) !important;
+  border-radius:10px !important; font-family:'Inter',sans-serif !important;
+  font-size:0.85rem !important;
   transition:border-color 0.2s,background 0.2s !important;
 }
 .stButton>button[kind="secondary"]:hover {
-  border-color:rgba(52,211,153,0.5) !important;
-  background:rgba(52,211,153,0.07) !important;
+  border-color:rgba(13,148,136,0.5) !important;
+  background:rgba(13,148,136,0.08) !important;
 }
 
-/* ── Tabs ── */
+/* ══════════════════════════════════════
+   TABS
+══════════════════════════════════════ */
 .stTabs [data-baseweb="tab-list"] {
-  background:rgba(255,255,255,0.02) !important;
-  border:1px solid rgba(52,211,153,0.18) !important;
-  border-radius:13px !important; padding:5px !important; gap:4px !important;
-  margin-bottom:1rem !important;
+  background:rgba(15,23,42,0.7) !important;
+  border:1px solid rgba(51,65,85,0.5) !important;
+  border-radius:12px !important; padding:5px !important;
+  gap:3px !important; margin-bottom:1rem !important;
 }
 .stTabs [data-baseweb="tab"] {
-  background:transparent !important; border-radius:9px !important;
-  color:rgba(52,211,153,0.45) !important;
-  font-family:'Space Grotesk',sans-serif !important;
-  font-weight:600 !important; font-size:0.84rem !important;
-  padding:0.48rem 0.7rem !important; border:none !important;
+  background:transparent !important; border-radius:8px !important;
+  color:rgba(148,163,184,0.6) !important;
+  font-family:'Inter',sans-serif !important;
+  font-weight:600 !important; font-size:0.8rem !important;
+  padding:0.45rem 0.6rem !important; border:none !important;
   transition:all 0.2s ease !important;
 }
 .stTabs [aria-selected="true"] {
-  background:linear-gradient(135deg,#059669,#34d399) !important;
-  color:#000 !important; font-weight:700 !important;
-  box-shadow:0 2px 14px rgba(5,150,105,0.4) !important;
+  background:linear-gradient(135deg,#0F766E,#0D9488) !important;
+  color:#fff !important;
+  box-shadow:0 2px 12px rgba(13,148,136,0.35) !important;
 }
 .stTabs [data-baseweb="tab-border"] { display:none !important; }
 .stTabs [data-baseweb="tab-panel"]  { padding-top:0.2rem !important; }
 
-/* ── Section label ── */
+/* ══════════════════════════════════════
+   SECTION LABEL
+══════════════════════════════════════ */
 .sl {
-  font-family:'IBM Plex Mono',monospace; font-size:0.6rem;
+  font-family:'IBM Plex Mono',monospace; font-size:0.58rem;
   letter-spacing:0.2em; text-transform:uppercase;
-  color:rgba(5,150,105,0.75); margin:1.6rem 0 0.6rem;
+  color:rgba(13,148,136,0.7); margin:1.6rem 0 0.65rem;
 }
 
-/* ── Progress bar ── */
-.pv-bar-wrap {
-  background:rgba(255,255,255,0.05); border-radius:20px;
-  height:14px; overflow:hidden; margin:0.6rem 0;
-  border:1px solid rgba(52,211,153,0.15);
+/* ══════════════════════════════════════
+   METRIC BLOCKS (clean horizontal)
+══════════════════════════════════════ */
+.metric-row { display:flex; gap:0.5rem; margin:0.5rem 0; }
+.metric-block {
+  flex:1; background:rgba(30,41,59,0.6);
+  border:1px solid rgba(51,65,85,0.5);
+  border-radius:12px; padding:0.9rem 0.6rem; text-align:center;
 }
-.pv-bar-fill {
+.metric-block-gold {
+  flex:1; background:rgba(30,41,59,0.6);
+  border:1px solid rgba(202,138,4,0.3);
+  border-radius:12px; padding:0.9rem 0.6rem; text-align:center;
+}
+.metric-val {
+  font-family:'Orbitron',monospace; font-size:1.4rem;
+  font-weight:700; color:#2DD4BF; line-height:1;
+}
+.metric-val-gold {
+  font-family:'Orbitron',monospace; font-size:1.4rem;
+  font-weight:700; color:#FCD34D; line-height:1;
+}
+.metric-lbl {
+  font-family:'IBM Plex Mono',monospace; font-size:0.55rem;
+  letter-spacing:0.08em; text-transform:uppercase;
+  color:rgba(148,163,184,0.5); margin-top:0.3rem; line-height:1.3;
+}
+
+/* ══════════════════════════════════════
+   PROGRESS BARS
+══════════════════════════════════════ */
+.pv-bar-wrap {
+  background:rgba(30,41,59,0.7); border-radius:20px; height:12px;
+  overflow:hidden; border:1px solid rgba(51,65,85,0.4);
+}
+.pv-bar-teal {
   height:100%; border-radius:20px;
-  background:linear-gradient(90deg,#059669,#34d399,#6ee7b7);
+  background:linear-gradient(90deg,#0F766E,#0D9488,#2DD4BF);
   background-size:200% auto;
-  animation: progressFill 1.2s ease both, shimmer 2.5s linear infinite;
-  transition: width 0.8s ease;
+  animation: barFill 1.2s ease both, shimmer 3s linear infinite;
+}
+.pv-bar-gold {
+  height:100%; border-radius:20px;
+  background:linear-gradient(90deg,#92400E,#CA8A04,#FCD34D);
+  background-size:200% auto;
+  animation: barFill 1.4s ease both, shimmer 3s linear infinite;
 }
 .pv-legend {
   display:flex; justify-content:space-between;
-  font-family:'IBM Plex Mono',monospace; font-size:0.65rem;
-  color:rgba(52,211,153,0.5); margin-top:0.3rem;
+  font-family:'IBM Plex Mono',monospace; font-size:0.6rem;
+  color:rgba(100,116,139,0.8); margin-top:0.3rem;
 }
 
-/* ── Metric chips ── */
-.metric-row { display:flex; gap:0.5rem; margin-bottom:0.6rem; flex-wrap:wrap; }
-.metric-chip {
-  flex:1; min-width:90px;
-  background:rgba(5,150,105,0.08);
-  border:1px solid rgba(52,211,153,0.18);
-  border-radius:12px; padding:0.8rem 0.6rem; text-align:center;
-}
-.metric-val {
-  font-family:'Orbitron',monospace; font-size:1.3rem;
-  font-weight:700; color:#34d399; line-height:1;
-}
-.metric-lbl {
-  font-family:'IBM Plex Mono',monospace; font-size:0.58rem;
-  letter-spacing:0.09em; text-transform:uppercase;
-  color:rgba(52,211,153,0.45); margin-top:0.25rem; line-height:1.3;
-}
-
-/* ── Script output box ── */
+/* ══════════════════════════════════════
+   SCRIPT & PRODUCT CARDS
+══════════════════════════════════════ */
 .script-box {
-  background:rgba(5,150,105,0.06);
-  border:1px solid rgba(52,211,153,0.25);
-  border-radius:14px; padding:1.2rem 1.1rem;
-  font-size:0.9rem; line-height:1.75; color:#E8E6F0;
-  white-space:pre-wrap; margin-top:0.6rem;
-  animation: fadeUp 0.4s ease both;
+  background:rgba(15,23,42,0.8);
+  border:1px solid rgba(13,148,136,0.3);
+  border-radius:12px; padding:1.2rem 1.1rem;
+  font-size:0.88rem; line-height:1.8; color:#CBD5E1;
+  white-space:pre-wrap; animation:fadeUp 0.4s ease both;
+}
+.product-card {
+  background:rgba(15,23,42,0.8);
+  border:1px solid rgba(202,138,4,0.3);
+  border-radius:14px; padding:1.4rem 1.3rem;
+  margin-top:0.8rem; animation:fadeUp 0.4s ease both;
+  position:relative; overflow:hidden;
+}
+.product-card::before {
+  content:''; position:absolute; top:0; left:8%; right:8%; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(202,138,4,0.4),transparent);
+}
+.product-card-title {
+  font-family:'IBM Plex Mono',monospace; font-size:0.6rem;
+  letter-spacing:0.15em; text-transform:uppercase;
+  color:rgba(202,138,4,0.85); margin-bottom:0.9rem;
+}
+.product-name {
+  font-weight:700; font-size:0.95rem; color:#F1F5F9; margin-bottom:0.2rem;
+}
+.product-detail {
+  font-size:0.8rem; color:rgba(148,163,184,0.7); line-height:1.6;
+}
+.pv-tag {
+  display:inline-block; background:rgba(202,138,4,0.12);
+  border:1px solid rgba(202,138,4,0.3); color:#FCD34D;
+  font-family:'IBM Plex Mono',monospace; font-size:0.62rem;
+  letter-spacing:0.1em; padding:0.2rem 0.7rem; border-radius:8px;
+  margin:0.6rem 0;
+}
+.disclaimer-box {
+  background:rgba(30,41,59,0.5); border:1px solid rgba(71,85,105,0.4);
+  border-radius:8px; padding:0.6rem 0.8rem; margin-top:0.8rem;
+  font-size:0.72rem; color:rgba(100,116,139,0.9); line-height:1.5;
 }
 
-/* ── Blueprint accordion ── */
-.bp-month {
-  background:rgba(255,255,255,0.025);
-  border:1px solid rgba(52,211,153,0.15);
-  border-radius:14px; padding:1.1rem 1.2rem;
-  margin-bottom:0.7rem; animation: fadeUp 0.4s ease both;
+/* ══════════════════════════════════════
+   BLUEPRINT
+══════════════════════════════════════ */
+.bp-phase {
+  background:rgba(15,23,42,0.6);
+  border:1px solid rgba(51,65,85,0.45);
+  border-radius:14px; padding:1.2rem 1.3rem;
+  margin-bottom:0.8rem; animation:fadeUp 0.4s ease both;
 }
-.bp-month-title {
-  font-family:'Orbitron',monospace; font-size:0.82rem;
-  font-weight:700; color:#34d399; letter-spacing:0.06em;
-  margin-bottom:0.6rem;
+.bp-phase-header {
+  font-family:'Orbitron',monospace; font-size:0.78rem;
+  font-weight:700; color:#2DD4BF; letter-spacing:0.05em;
+  margin-bottom:0.4rem;
 }
 .bp-tag {
   display:inline-block; font-family:'IBM Plex Mono',monospace;
-  font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase;
-  background:rgba(5,150,105,0.14); color:#34d399;
-  border:1px solid rgba(52,211,153,0.25);
-  padding:0.15rem 0.6rem; border-radius:10px; margin-bottom:0.7rem;
+  font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase;
+  background:rgba(13,148,136,0.12); color:#2DD4BF;
+  border:1px solid rgba(13,148,136,0.28);
+  padding:0.15rem 0.6rem; border-radius:8px; margin-bottom:0.7rem;
+}
+.bp-goal {
+  font-size:0.78rem; color:rgba(148,163,184,0.65);
+  font-family:'IBM Plex Mono',monospace; font-size:0.65rem;
+  line-height:1.5; margin-bottom:0.7rem;
 }
 
-/* ── Banners ── */
+/* ══════════════════════════════════════
+   BANNERS
+══════════════════════════════════════ */
 .b-success {
-  background:rgba(34,197,94,0.07); border:1px solid rgba(34,197,94,0.28);
-  border-radius:11px; padding:0.75rem 1rem; font-size:0.83rem;
-  color:#86efac; margin:0.5rem 0; animation:fadeUp 0.25s ease both;
+  background:rgba(6,78,59,0.2); border:1px solid rgba(16,185,129,0.3);
+  border-radius:10px; padding:0.75rem 1rem;
+  font-size:0.82rem; color:#6EE7B7; margin:0.5rem 0;
+  animation:fadeUp 0.25s ease both;
 }
 .b-warn {
-  background:rgba(251,191,36,0.07); border:1px solid rgba(251,191,36,0.28);
-  border-radius:11px; padding:0.75rem 1rem; font-size:0.83rem;
-  color:#fde68a; margin:0.5rem 0; animation:fadeUp 0.25s ease both;
+  background:rgba(120,53,15,0.2); border:1px solid rgba(245,158,11,0.3);
+  border-radius:10px; padding:0.75rem 1rem;
+  font-size:0.82rem; color:#FDE68A; margin:0.5rem 0;
+  animation:fadeUp 0.25s ease both;
+}
+.b-info {
+  background:rgba(15,23,42,0.7); border:1px solid rgba(51,65,85,0.5);
+  border-radius:10px; padding:0.75rem 1rem;
+  font-size:0.82rem; color:rgba(148,163,184,0.8); margin:0.5rem 0;
 }
 
-/* ── Shimmer divider ── */
+/* ══════════════════════════════════════
+   DIVIDER & FOOTER
+══════════════════════════════════════ */
 .sdiv {
-  height:1px; margin:1.3rem 0;
-  background:linear-gradient(90deg,transparent,rgba(52,211,153,0.35) 50%,transparent);
-  background-size:200% auto; animation:shimmer 3s linear infinite;
+  height:1px; margin:1.2rem 0;
+  background:linear-gradient(90deg,transparent,rgba(13,148,136,0.3) 50%,transparent);
 }
-
-/* ── Footer ── */
-.gl-footer {
+.vhq-footer {
   text-align:center; font-family:'IBM Plex Mono',monospace;
-  font-size:0.58rem; letter-spacing:0.12em;
-  color:rgba(5,150,105,0.3); margin-top:3rem; padding-top:1rem;
-  border-top:1px solid rgba(5,150,105,0.08);
+  font-size:0.56rem; letter-spacing:0.12em;
+  color:rgba(51,65,85,0.8); margin-top:3rem; padding-top:1rem;
+  border-top:1px solid rgba(30,41,59,0.8);
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 # ═══════════════════════════════════════════════════════════════
 # SESSION STATE
 # ═══════════════════════════════════════════════════════════════
 _defaults = {
-    "plans_shown":    0,
-    "webinars":       0,
-    "month_pv":       0,
-    "total_pv":       0,
-    "generated_script": "",
-    # Blueprint checkboxes: dict of {task_id: bool}
-    "checks": {},
+    "plans_shown":        0,
+    "webinars":           0,
+    "month_pv":           0,
+    "total_pv":           0,
+    "generated_script":   "",
+    "product_card":       None,
+    "checks":             {},
 }
 for k, v in _defaults.items():
     if k not in st.session_state:
         st.session_state[k] = v
 
+
 # ═══════════════════════════════════════════════════════════════
 # SCRIPT LIBRARY
 # ═══════════════════════════════════════════════════════════════
 SCRIPTS: dict[tuple, str] = {
-
-    # ── College Student ─────────────────────────────────────
     ("🎓 College Student", "📞 Invite to Zoom Meeting"):
 """Hey [Name] 👋
 
-I've been exploring something genuinely interesting lately — an income stream a lot of students are using to cover expenses without affecting studies.
+Hope you're doing well! I've been exploring something that a lot of students are using to build a side income — doesn't need much time and fits around college life.
 
-Takes about 20 minutes on a Zoom call to explain properly. Would you be open to hearing it this week — say Tuesday or Thursday evening?
+Takes about 20 minutes over a Zoom call to explain properly.
 
-No pressure at all. If it fits your situation, great. If not, no worries. 🙂""",
+Would you be open to a quick chat this week — say Tuesday or Thursday evening? No pressure at all. 🙂""",
 
     ("🎓 College Student", "📦 Product Recommendation"):
-"""Hey [Name]! 
+"""Hey [Name]!
 
-I've been using Vestige's health and wellness products for a few months and the difference has been noticeable — especially [specific product e.g. spirulina / protein supplement].
+I've been using Vestige's health supplements for a few months and noticed a genuine difference — especially in energy and focus during exams.
 
-Given you're in [exams / gym / sports], thought you might find them useful. They're reasonably priced and good quality.
+Given your schedule, thought you might find them useful. Quality is solid and the pricing is reasonable.
 
-Want me to share more details or the product catalogue? 📋""",
+Want me to share the product details or catalogue? 📋""",
 
     ("🎓 College Student", "🚀 Explaining the Business Income Plan"):
 """Hey [Name],
 
-Quick question — are you open to earning on the side while still in college?
+Quick question — are you open to building a part-time income while still in college?
 
-I'm part of a network with Vestige (it's a legitimate FMCG health brand — been around 20+ years in India). The model is performance-based, no fixed timings, and suits students well.
+I'm part of a network with Vestige — it's a legitimate health and wellness brand, 20+ years in India. The model is performance-based, fully flexible.
 
-I can share how it works in a short call. No obligation to join — just worth knowing about. Interested?""",
+I can explain how it works in about 15 minutes over a call. No obligation at all. Interested?""",
 
-    # ── Corporate Employee ───────────────────────────────────
     ("💼 Corporate Employee", "📞 Invite to Zoom Meeting"):
 """Hi [Name],
 
-Hope work is going well! I know how hectic schedules get.
+I know how full work schedules can get — so I'll be brief.
 
-I've been building a secondary income stream on the side over the past few months — doesn't interfere with the job at all, mostly weekends and evenings. 
+I've been building a secondary income on the side for a few months now. Mostly evenings and weekends — no conflict with the job at all.
 
-Would you have 20 minutes this Saturday for a quick Zoom? I think it might be relevant to where you are right now. Let me know what time works. 🙌""",
+Would you have 20 minutes this Saturday for a quick Zoom? I think it's worth your time. Let me know what works. 🙌""",
 
     ("💼 Corporate Employee", "📦 Product Recommendation"):
 """Hey [Name]!
 
-You mentioned being tired / stressed lately — I wanted to share something that's helped me: Vestige's wellness range (they have supplements, immunity products, and personal care that are actually good quality).
+You mentioned feeling tired / stressed lately — I've been using Vestige's wellness range and it's made a noticeable difference (better energy, clearer focus).
 
-Not a sales pitch — just sharing something that works for me. Happy to send you the details or order link if you want to check it out. 🟢""",
+Not a pitch — just sharing something that works for me. Happy to send the product link if you want to check it out. 🟢""",
 
     ("💼 Corporate Employee", "🚀 Explaining the Business Income Plan"):
 """Hi [Name],
 
-Direct question — are you happy with only one source of income?
+Straight question — are you comfortable relying on only one income source?
 
-I'm working with Vestige as a part-time distributor. It's a performance-based model — no salary, but no fixed hours either. Fits well alongside a job.
+I'm working with Vestige as a part-time distributor. It's performance-based, no fixed hours, fits well alongside a job.
 
-I can walk you through how the income structure works in 15–20 minutes. If it doesn't make sense for your situation, that's totally fine. Worth a look though — interested?""",
+I can walk you through the income structure in 15 minutes. If it doesn't suit your situation, no problem. Worth knowing about though — interested?""",
 
-    # ── Housewife ────────────────────────────────────────────
     ("🏠 Housewife", "📞 Invite to Zoom Meeting"):
 """Hi [Name] 😊
 
-I wanted to share something I started recently that fits really well around home life — flexible timings, no office, and good earning potential with consistency.
+I started something recently that works really well around home life — fully flexible timings, no office, and genuine earning potential.
 
-It's an online business model with Vestige — I can explain everything on a quick call at whatever time suits you. Even 20 minutes is enough to get the full picture. 
+It's an online business with Vestige. I can explain everything in about 20 minutes at whatever time suits you.
 
-When works for you this week?""",
+When would work for you this week?""",
 
     ("🏠 Housewife", "📦 Product Recommendation"):
 """Hi [Name]!
 
-I've been using Vestige's home care and health products for a while now and genuinely find them good — especially [aloe vera gel / multivitamins / home cleaner].
+I've been using Vestige's home care and wellness products and genuinely find them good — quality is consistent and they deliver to home.
 
-Quality is solid and they're available for home delivery. Thought of you because you care about these things too! 
-
-Want me to share the catalogue? No obligation at all. 🌿""",
+Thought of you because you always prioritise good products for the family! Want me to share the catalogue? 🌿""",
 
     ("🏠 Housewife", "🚀 Explaining the Business Income Plan"):
 """Hi [Name],
 
-Quick thought — have you ever considered building your own income from home, fully on your schedule?
+Have you ever thought about building your own income from home, fully on your own schedule?
 
-I'm working with Vestige as a distributor. It suits home life really well — you work when you have time, there's no target pressure, and the earnings are genuinely performance-linked.
+I'm working with Vestige as a distributor. No target pressure, you work when you have time, and the earnings are genuinely performance-linked.
 
-I can explain the model in about 15 minutes whenever you're free. Would you like to know more? 😊""",
+I can explain how it works in 15 minutes whenever you're free. Would you like to hear more? 😊""",
 
-    # ── Small Business Owner ─────────────────────────────────
     ("🏪 Small Business Owner", "📞 Invite to Zoom Meeting"):
 """Hi [Name],
 
-You've built something of your own — which means you already understand how business works better than most.
+You already understand business better than most — so I'll be direct.
 
-I'm exploring a model with Vestige that creates recurring income through a product distribution network. Given your background, I think you'd evaluate it clearly and quickly.
+I'm building a distribution network with Vestige. Given your background, you'd evaluate it quickly and clearly.
 
-20-minute Zoom this week? I'll walk you through the full picture — numbers included. Let me know a time. 📊""",
+20-minute Zoom this week? I'll show you the numbers, not just the concept. What time works? 📊""",
 
     ("🏪 Small Business Owner", "📦 Product Recommendation"):
 """Hi [Name]!
 
-Have you looked at Vestige's product range? High-quality FMCG — health, wellness, home care.
+Have you looked at Vestige's FMCG range? Health, wellness, personal and home care — quality products with consistent demand.
 
-Given your setup [shop / customers], there's also a straightforward way to stock and recommend them with a margin. Thought it might be worth knowing about as a product line addition.
+Given your setup, there's also a clear distributor margin structure that could work as a product-line addition.
 
-Interested in seeing the catalogue or the distributor margin structure?""",
+Interested in seeing the catalogue or the numbers?""",
 
     ("🏪 Small Business Owner", "🚀 Explaining the Business Income Plan"):
 """Hi [Name],
 
-Straight to the point — Vestige's distributor model is one of the more transparent ones in network marketing, with clear PV-based payouts and a legitimate product range.
+Vestige's distributor model is one of the more transparent ones in the network marketing space — clear PV-based payouts, genuine products, 20+ years in the market.
 
-As a business owner you'd probably assess this in 10 minutes. I'd rather show you the actual numbers than pitch you.
+As a business owner you'd assess this in 10 minutes. I'd rather show you the actual numbers than pitch you.
 
-Can we do a quick call this week? You tell me if it's worth your time after.""",
+Quick call this week?""",
 }
+
+
+# ═══════════════════════════════════════════════════════════════
+# PRODUCT CONSULTING DATABASE
+# ═══════════════════════════════════════════════════════════════
+PRODUCT_DB: dict[str, dict] = {
+    "💇 Hair Fall & Skin Health": {
+        "bundle": [
+            {"name": "Vestige Hair, Skin & Nails",   "pv": 40,  "detail": "Biotin + collagen support for hair strength and skin elasticity."},
+            {"name": "Vestige Neem Capsules",          "pv": 22,  "detail": "Natural blood purifier supporting skin health and acne reduction."},
+            {"name": "Vestige Aloe Vera Juice",        "pv": 28,  "detail": "Internal hydration and gut-skin axis support."},
+        ],
+        "whatsapp_script": """Hi [Name] 😊
+
+I came across a Vestige supplement bundle that's specifically designed for hair fall and skin concerns — wanted to share it with you.
+
+The combination is:
+✅ Hair, Skin & Nails — biotin + collagen for hair strength
+✅ Neem Capsules — natural blood purifier (really helps with skin clarity)
+✅ Aloe Vera Juice — internal hydration support
+
+These work better as a bundle because they address the root causes together rather than just the visible symptoms.
+
+Would you like me to share the full product details or place an order for you? The products are home-delivered. 🙏""",
+    },
+
+    "💪 Immunity & General Wellness": {
+        "bundle": [
+            {"name": "Vestige Spirulina",             "pv": 35,  "detail": "Complete protein + micronutrients. Strong daily immunity base."},
+            {"name": "Vestige Flax Oil Capsules",     "pv": 30,  "detail": "Omega-3 support for inflammation and cardiovascular health."},
+            {"name": "Vestige Wheat Grass Powder",    "pv": 25,  "detail": "Alkalising greens blend for energy and detox support."},
+        ],
+        "whatsapp_script": """Hi [Name],
+
+For overall immunity and daily wellness, there's a Vestige bundle I'd genuinely recommend based on what I've seen work:
+
+✅ Spirulina — complete plant protein + micronutrients (great daily base)
+✅ Flax Oil Capsules — Omega-3s for reducing inflammation
+✅ Wheat Grass Powder — alkalising, energy-boosting greens
+
+Together these cover the basics of nutrition that most Indian diets miss, especially for people with hectic schedules.
+
+Happy to share more details or arrange a home delivery. Let me know! 🙂""",
+    },
+
+    "🦴 Joint & Bone Pain (Arthritis)": {
+        "bundle": [
+            {"name": "Vestige Glucosamine",           "pv": 45,  "detail": "Cartilage repair and joint mobility support."},
+            {"name": "Vestige Calcium",               "pv": 28,  "detail": "Bone density and strength maintenance."},
+            {"name": "Vestige Flax Oil Capsules",     "pv": 30,  "detail": "Anti-inflammatory Omega-3s to reduce joint pain."},
+        ],
+        "whatsapp_script": """Hi [Name],
+
+For joint pain and bone health concerns, here's what I'd suggest looking at from Vestige:
+
+✅ Glucosamine — specifically supports cartilage repair and joint mobility
+✅ Calcium Supplement — for bone density (especially important as we age)
+✅ Flax Oil Capsules — natural Omega-3s which reduce joint inflammation
+
+These three together address the pain, the underlying joint wear, and the inflammation that makes it worse.
+
+These aren't a replacement for medical treatment — but as nutritional support, they're solid. Want me to share more details? 🙏""",
+    },
+
+    "🩸 Blood Sugar / Glucose Management": {
+        "bundle": [
+            {"name": "Vestige Stevia",                "pv": 20,  "detail": "Natural zero-calorie sweetener, safe for blood sugar management."},
+            {"name": "Vestige Neem Capsules",          "pv": 22,  "detail": "Supports healthy blood glucose levels naturally."},
+            {"name": "Vestige Spirulina",             "pv": 35,  "detail": "Supports metabolic health and reduces blood sugar spikes."},
+        ],
+        "whatsapp_script": """Hi [Name],
+
+For blood sugar management, here's a Vestige wellness bundle worth knowing about:
+
+✅ Stevia — natural sweetener with zero glycaemic impact (great sugar substitute)
+✅ Neem Capsules — traditionally used to support healthy glucose levels
+✅ Spirulina — shown in studies to support metabolic health and reduce blood sugar spikes
+
+This is nutritional support — not a replacement for prescribed medication. But used consistently alongside a healthy lifestyle, many people find real benefit.
+
+Shall I share the full product information? 😊""",
+    },
+
+    "❤️ Heart & Cardiovascular Care": {
+        "bundle": [
+            {"name": "Vestige Flax Oil Capsules",     "pv": 30,  "detail": "Omega-3s for cholesterol management and heart protection."},
+            {"name": "Vestige Garlic Capsules",       "pv": 22,  "detail": "Natural blood pressure support and circulation improvement."},
+            {"name": "Vestige Spirulina",             "pv": 35,  "detail": "Antioxidant-rich superfood that supports cardiovascular health."},
+        ],
+        "whatsapp_script": """Hi [Name],
+
+For heart and cardiovascular care, here's a Vestige supplement bundle I'd recommend:
+
+✅ Flax Oil Capsules — Omega-3s for healthy cholesterol and heart protection
+✅ Garlic Capsules — natural circulation support and blood pressure management
+✅ Spirulina — powerful antioxidant that protects against oxidative stress
+
+These are nutritional supplements, not a substitute for cardiac medication or medical advice. But as daily preventive support, they're well-regarded.
+
+Want me to send more details or arrange home delivery? 🙏""",
+    },
+}
+
 
 # ═══════════════════════════════════════════════════════════════
 # BLUEPRINT DATA
@@ -448,68 +656,75 @@ BLUEPRINT = [
         "phase": "Month 1–2",
         "title": "Core Learning & Self-Use Activation",
         "tag": "Foundation Phase",
-        "goal": "Hit consistent 100 PV/month personal use. Learn products deeply.",
+        "goal": "Hit 100 PV/month personal use. Learn products deeply. Build your contact list.",
         "tasks": [
-            "Complete Vestige product training videos (official channel)",
-            "Order your first personal-use product bundle (target: 100 PV)",
-            "Open WhatsApp Business account with a clear professional bio",
+            "Complete Vestige product training (official YouTube channel)",
+            "Place your first personal-use product bundle — target 100 PV",
+            "Set up WhatsApp Business with a clear professional bio and profile",
             "List 30 people you know — family, friends, classmates, colleagues",
-            "Attend 2 company webinars / team Zoom sessions this month",
-            "Use the AI Script Engine to practice 5 conversations (no selling — just sharing)",
-            "Track every conversation in your PV Dashboard",
-            "Identify 3 people genuinely interested — note them separately",
+            "Attend 2 company webinars or team Zoom sessions this month",
+            "Use the Script Engine to practise 5 conversation openers",
+            "Identify 3 genuinely interested people from your initial conversations",
+            "Log every conversation in the PV Dashboard daily",
         ],
     },
     {
         "phase": "Month 3–4",
         "title": "Duplication Phase — Building Your Frontline",
         "tag": "Growth Phase",
-        "goal": "Onboard 3–6 active frontline distributors. Reach 500–1500 PV.",
+        "goal": "Onboard 3–6 active frontline distributors. Reach 500–1500 cumulative PV.",
         "tasks": [
-            "Use AI Script Engine daily — personalise for each lead type",
-            "Show the business plan to at least 1 person per day",
+            "Use the Script Engine daily — personalise for each lead type",
+            "Show the business plan to at least one new person per day",
             "Onboard your first active frontline distributor",
             "Help your frontline place their first product order",
             "Attend every team training — bring a new member each time",
-            "Hit 300 PV this month (personal + first frontline combined)",
-            "Celebrate first downline's success publicly in team group",
-            "Review your list — identify 3 more warm leads to approach",
+            "Hit 300 PV this month (personal + frontline combined)",
+            "Celebrate your first downline's first order in your team group",
+            "Identify 3 more warm leads from your original list",
         ],
     },
     {
         "phase": "Month 5–6",
-        "title": "Bronze Director Push",
+        "title": "Bronze Director Leadership Push",
         "tag": "Leadership Phase",
         "goal": "Cumulative 5500 PV (or Fast Start 4500 PV). Unlock Bronze Director.",
         "tasks": [
-            "Total team PV: target 1500–2500 this month",
+            "Target team PV of 1500–2500 this month",
             "Support each frontline to onboard their first recruit",
-            "Run a team product education session (you lead it)",
-            "Track every team member's PV weekly — flag who needs support",
-            "Cross 4500 cumulative PV — Fast Start Bronze qualifier",
-            "Submit Bronze Director application with your sponsor/upline",
-            "Plan your post-Bronze duplication strategy for Silver Director",
-            "Document your 6-month journey — share with your downline as proof",
+            "Lead a team product education session yourself",
+            "Track every team member's PV weekly — support anyone falling behind",
+            "Cross 4500 cumulative PV — Fast Start Bronze qualifier milestone",
+            "Coordinate Bronze Director application with your sponsor / upline",
+            "Plan your post-Bronze strategy toward Silver Director",
+            "Document your 6-month journey — share as proof of system with your downline",
         ],
     },
 ]
+
 
 # ═══════════════════════════════════════════════════════════════
 # HEADER
 # ═══════════════════════════════════════════════════════════════
 st.markdown("""
-<div class="gl-header">
-  <div class="gl-eyebrow">◈ AI-Copilot for Network Distributors</div>
-  <div class="gl-logo">VHQ · GROWTHLINE</div>
-  <div class="gl-tagline">Your Structured Path from Level 0 → Bronze Director</div>
-  <div class="gl-badge">PHASE 1 · CORE MATRIX · VESTIGE EDITION</div>
+<div class="vhq-header">
+  <div class="vhq-eyebrow">◈ Official AI Copilot · Network Distribution Platform</div>
+  <div class="vhq-logo">VHQ · GROWTHLINE</div>
+  <div class="vhq-sub">VESTIGE EDITION</div>
+  <div class="vhq-tagline">Structured path from Level 0 to Bronze Director — powered by AI</div>
+  <div class="vhq-badges">
+    <span class="vhq-badge badge-teal">Phase 1 · Core Matrix</span>
+    <span class="vhq-badge badge-gold">Vestige Edition</span>
+    <span class="vhq-badge badge-slate">Built for Distributors</span>
+  </div>
 </div>
 """, unsafe_allow_html=True)
 
+
 # ═══════════════════════════════════════════════════════════════
-# MAIN NAVIGATION
+# NAVIGATION TABS
 # ═══════════════════════════════════════════════════════════════
-tabs = st.tabs(["🎯  Script Engine", "📈  PV Dashboard", "🎓  6-Month Blueprint", "⚙  Settings"])
+tabs = st.tabs(["🎯 Script Engine", "📦 Product Finder", "📈 PV Dashboard", "🎓 Blueprint", "⚙ Settings"])
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -517,7 +732,7 @@ tabs = st.tabs(["🎯  Script Engine", "📈  PV Dashboard", "🎓  6-Month Blue
 # ═══════════════════════════════════════════════════════════════
 with tabs[0]:
     st.markdown('<div class="sl">◈ &nbsp; AI Lead Script Generator</div>', unsafe_allow_html=True)
-    st.markdown('<div class="gc"><div class="gc-label">— Script Inputs —</div>', unsafe_allow_html=True)
+    st.markdown('<div class="gc"><div class="gc-label">— Conversation Script Inputs —</div>', unsafe_allow_html=True)
 
     lead_type = st.selectbox(
         "Lead Type",
@@ -529,247 +744,325 @@ with tabs[0]:
         ["📞 Invite to Zoom Meeting", "📦 Product Recommendation", "🚀 Explaining the Business Income Plan"],
         key="objective",
     )
-    lead_name = st.text_input("Lead's First Name (optional)", placeholder="e.g. Rohit", key="lead_name")
-
-    generate = st.button("◈  Generate Script", type="primary", use_container_width=True, key="gen_btn")
+    lead_name = st.text_input("Lead's First Name (optional)", placeholder="e.g. Priya", key="lead_name")
+    gen_btn   = st.button("◈  Generate Script", type="primary", use_container_width=True, key="gen_btn")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    if generate:
-        key = (lead_type, objective)
-        script = SCRIPTS.get(key, "Script not found for this combination.")
+    if gen_btn:
+        raw = SCRIPTS.get((lead_type, objective), "")
         if lead_name.strip():
-            script = script.replace("[Name]", lead_name.strip())
-        st.session_state.generated_script = script
+            raw = raw.replace("[Name]", lead_name.strip())
+        st.session_state.generated_script = raw
 
     if st.session_state.generated_script:
         st.markdown('<div class="sl">◈ &nbsp; Your Script</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="script-box">{st.session_state.generated_script}</div>', unsafe_allow_html=True)
-
-        # Copy via code block (native 1-tap copy on mobile)
-        st.caption("Tap the copy icon below to copy to clipboard ↓")
+        st.caption("Tap the copy icon ↓ for 1-tap clipboard copy")
         st.code(st.session_state.generated_script, language=None)
+        st.markdown('<div class="b-success">✓ Script ready. Add a personal touch before sending — authenticity always converts better than any script.</div>', unsafe_allow_html=True)
 
-        st.markdown('<div class="b-success">✓ Script ready. Personalise it naturally before sending — authenticity converts better than any script.</div>', unsafe_allow_html=True)
-
-    st.markdown('<div class="b-warn">💡 Tip: The best conversations start with genuine curiosity about the other person. Use this script as a guide, not a monologue.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="b-info">💡 Use these scripts as conversation starters, not sales monologues. Lead with genuine interest in the other person first.</div>', unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════════════
-# TAB 2 — PV DASHBOARD
+# TAB 2 — VESTIGE PRODUCT CONSULTING ENGINE
 # ═══════════════════════════════════════════════════════════════
 with tabs[1]:
+    st.markdown('<div class="sl">◈ &nbsp; Vestige Product Solution Finder</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="b-info">
+      Select a customer's health concern below to instantly see the right Vestige supplement bundle,
+      the PV value it generates, and a ready-made WhatsApp message you can share.
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="gc"><div class="gc-label">— Customer Health Concern —</div>', unsafe_allow_html=True)
+
+    concern = st.selectbox(
+        "Health Concern",
+        list(PRODUCT_DB.keys()),
+        key="concern",
+    )
+    cust_name = st.text_input("Customer's Name (optional)", placeholder="e.g. Rahul ji", key="cust_name")
+    find_btn  = st.button("◈  Find Product Solution", type="primary", use_container_width=True, key="find_btn")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    if find_btn:
+        st.session_state.product_card = PRODUCT_DB[concern]
+        st.session_state.product_concern = concern
+
+    if st.session_state.get("product_card"):
+        card    = st.session_state.product_card
+        concern_label = st.session_state.get("product_concern", "")
+        bundle  = card["bundle"]
+        total_pv = sum(p["pv"] for p in bundle)
+        ws_msg  = card["whatsapp_script"]
+        if cust_name.strip():
+            ws_msg = ws_msg.replace("[Name]", cust_name.strip())
+
+        # ── Product bundle card ────────────────────────────
+        st.markdown('<div class="sl">◈ &nbsp; Recommended Bundle</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="product-card"><div class="product-card-title">— Solution for {concern_label} —</div>', unsafe_allow_html=True)
+
+        for prod in bundle:
+            st.markdown(f"""
+            <div style="margin-bottom:0.9rem;padding-bottom:0.9rem;border-bottom:1px solid rgba(51,65,85,0.3)">
+              <div class="product-name">◈ &nbsp;{prod['name']}</div>
+              <div class="product-detail">{prod['detail']}</div>
+              <div style="margin-top:0.3rem;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:rgba(13,148,136,0.8)">
+                PV: {prod['pv']}
+              </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown(f"""
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:0.3rem">
+          <div class="pv-tag">◈ &nbsp; Bundle PV: {total_pv} PV</div>
+          <div style="font-size:0.75rem;color:rgba(148,163,184,0.55)">
+            {len(bundle)} products
+          </div>
+        </div>
+        <div class="disclaimer-box">
+          ⚠ These are dietary supplement suggestions only — not medical advice.
+          Always advise customers to consult their doctor before starting any supplement,
+          especially if they are on prescription medication.
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        # ── WhatsApp message ───────────────────────────────
+        st.markdown('<div class="sl">◈ &nbsp; Ready-Made WhatsApp Message</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="script-box">{ws_msg}</div>', unsafe_allow_html=True)
+        st.caption("Tap the copy icon ↓ to copy the message")
+        st.code(ws_msg, language=None)
+        st.markdown(f'<div class="b-success">✓ Bundle generates <strong>{total_pv} PV</strong> when ordered. Keep recommending consistently to build your monthly volume.</div>', unsafe_allow_html=True)
+
+
+# ═══════════════════════════════════════════════════════════════
+# TAB 3 — PV DASHBOARD
+# ═══════════════════════════════════════════════════════════════
+with tabs[2]:
     st.markdown('<div class="sl">◈ &nbsp; Daily Activity Tracker</div>', unsafe_allow_html=True)
 
-    # ── Activity counters ──────────────────────────────────
-    st.markdown('<div class="gc"><div class="gc-label">— Today\'s Activity —</div>', unsafe_allow_html=True)
+    # ── Activity inputs — clean number_input row ───────────
+    st.markdown('<div class="gc"><div class="gc-label">— Today\'s Activity Inputs —</div>', unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     with col1:
-        if st.button("＋", key="pp", type="secondary", use_container_width=True):
-            st.session_state.plans_shown += 1
-        if st.button("－", key="pm", type="secondary", use_container_width=True):
-            st.session_state.plans_shown = max(0, st.session_state.plans_shown - 1)
-    with col2:
-        if st.button("＋", key="wp", type="secondary", use_container_width=True):
-            st.session_state.webinars += 1
-        if st.button("－", key="wm", type="secondary", use_container_width=True):
-            st.session_state.webinars = max(0, st.session_state.webinars - 1)
-    with col3:
-        month_pv_input = st.number_input(
-            "Month PV", min_value=0, max_value=9999,
-            value=st.session_state.month_pv, step=50, key="mpv_input",
-            label_visibility="visible",
+        plans_val = st.number_input(
+            "Plans Shown Today",
+            min_value=0, max_value=99,
+            value=st.session_state.plans_shown,
+            step=1, key="plans_input",
         )
-        st.session_state.month_pv = month_pv_input
+        st.session_state.plans_shown = plans_val
+    with col2:
+        web_val = st.number_input(
+            "Webinars Attended",
+            min_value=0, max_value=99,
+            value=st.session_state.webinars,
+            step=1, key="web_input",
+        )
+        st.session_state.webinars = web_val
 
+    month_val = st.number_input(
+        "This Month's PV (personal + direct team)",
+        min_value=0, max_value=9999,
+        value=st.session_state.month_pv,
+        step=50, key="month_input",
+    )
+    st.session_state.month_pv = month_val
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # ── Metric display ─────────────────────────────────────
     st.markdown(f"""
     <div class="metric-row">
-      <div class="metric-chip">
+      <div class="metric-block">
         <div class="metric-val">{st.session_state.plans_shown}</div>
         <div class="metric-lbl">Plans<br>Shown Today</div>
       </div>
-      <div class="metric-chip">
+      <div class="metric-block">
         <div class="metric-val">{st.session_state.webinars}</div>
         <div class="metric-lbl">Webinars<br>Attended</div>
       </div>
-      <div class="metric-chip">
-        <div class="metric-val">{st.session_state.month_pv}</div>
-        <div class="metric-lbl">Month PV<br>This Month</div>
+      <div class="metric-block-gold">
+        <div class="metric-val-gold">{st.session_state.month_pv}</div>
+        <div class="metric-lbl">Month<br>PV</div>
       </div>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
-    # ── Cumulative PV & Bronze Director progress ───────────
-    st.markdown('<div class="sl">◈ &nbsp; Bronze Director Progress</div>', unsafe_allow_html=True)
-    st.markdown('<div class="gc"><div class="gc-label">— PV Milestone Tracker —</div>', unsafe_allow_html=True)
+    # ── Bronze Director progress ───────────────────────────
+    st.markdown('<div class="sl">◈ &nbsp; Bronze Director Progress Tracker</div>', unsafe_allow_html=True)
+    st.markdown('<div class="gc-gold"><div class="gc-label">— Cumulative PV Milestones —</div>', unsafe_allow_html=True)
 
-    total_pv_input = st.number_input(
-        "Cumulative Total PV (all time)", min_value=0, max_value=99999,
-        value=st.session_state.total_pv, step=100, key="tpv_input",
+    total_val = st.number_input(
+        "Total Cumulative PV (all-time)",
+        min_value=0, max_value=99999,
+        value=st.session_state.total_pv,
+        step=100, key="total_input",
     )
-    st.session_state.total_pv = total_pv_input
+    st.session_state.total_pv = total_val
 
-    FAST_START = 4500
-    STANDARD   = 5500
-    pct_fast   = min(100, round(total_pv_input / FAST_START * 100, 1))
-    pct_std    = min(100, round(total_pv_input / STANDARD  * 100, 1))
+    FAST = 4500
+    STD  = 5500
+    pf   = min(100, round(total_val / FAST * 100, 1))
+    ps   = min(100, round(total_val / STD  * 100, 1))
 
     st.markdown(f"""
-    <div style="margin-top:0.3rem">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.2rem">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:rgba(52,211,153,0.7)">
-          ⚡ Fast Start Bronze (4500 PV)
+    <div style="margin-top:0.5rem">
+      <div style="display:flex;justify-content:space-between;margin-bottom:0.25rem">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:rgba(13,148,136,0.75)">
+          ⚡ Fast Start Bronze — 4500 PV
         </span>
-        <span style="font-family:'Orbitron',monospace;font-size:0.75rem;color:#34d399">{pct_fast}%</span>
+        <span style="font-family:'Orbitron',monospace;font-size:0.72rem;color:#2DD4BF">{pf}%</span>
       </div>
-      <div class="pv-bar-wrap">
-        <div class="pv-bar-fill" style="width:{pct_fast}%"></div>
-      </div>
-      <div class="pv-legend"><span>{total_pv_input} PV achieved</span><span>4500 PV target</span></div>
+      <div class="pv-bar-wrap"><div class="pv-bar-teal" style="width:{pf}%"></div></div>
+      <div class="pv-legend"><span>{total_val:,} PV</span><span>4,500 PV</span></div>
 
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:1rem 0 0.2rem">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:rgba(52,211,153,0.7)">
-          ◈ Standard Bronze (5500 PV)
+      <div style="display:flex;justify-content:space-between;margin:1rem 0 0.25rem">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:rgba(202,138,4,0.8)">
+          ◈ Standard Bronze — 5500 PV
         </span>
-        <span style="font-family:'Orbitron',monospace;font-size:0.75rem;color:#34d399">{pct_std}%</span>
+        <span style="font-family:'Orbitron',monospace;font-size:0.72rem;color:#FCD34D">{ps}%</span>
       </div>
-      <div class="pv-bar-wrap">
-        <div class="pv-bar-fill" style="width:{pct_std}%"></div>
-      </div>
-      <div class="pv-legend"><span>{total_pv_input} PV achieved</span><span>5500 PV target</span></div>
+      <div class="pv-bar-wrap"><div class="pv-bar-gold" style="width:{ps}%"></div></div>
+      <div class="pv-legend"><span>{total_val:,} PV</span><span>5,500 PV</span></div>
     </div>
     """, unsafe_allow_html=True)
 
-    if total_pv_input >= STANDARD:
-        st.markdown('<div class="b-success">🏆 Bronze Director target achieved! Submit your qualifier to your upline.</div>', unsafe_allow_html=True)
-    elif total_pv_input >= FAST_START:
-        st.markdown('<div class="b-success">⚡ Fast Start Bronze qualifier hit! 900 PV away from Standard Bronze.</div>', unsafe_allow_html=True)
-    elif total_pv_input >= 2000:
-        st.markdown(f'<div class="b-warn">📈 Good progress — {FAST_START - total_pv_input} PV to Fast Start Bronze. Keep building your team\'s volume.</div>', unsafe_allow_html=True)
+    if total_val >= STD:
+        st.markdown('<div class="b-success">🏆 Bronze Director achieved! Contact your upline to submit your qualifier immediately.</div>', unsafe_allow_html=True)
+    elif total_val >= FAST:
+        st.markdown(f'<div class="b-success">⚡ Fast Start Bronze qualified! {STD - total_val} PV to Standard Bronze.</div>', unsafe_allow_html=True)
+    elif total_val >= 2000:
+        st.markdown(f'<div class="b-warn">📈 On track — {FAST - total_val} PV to Fast Start Bronze. Keep driving team volume.</div>', unsafe_allow_html=True)
     else:
-        st.markdown(f'<div class="b-warn">🎯 Focus on Month 1–2 tasks. Build your personal 100 PV base first. {FAST_START - total_pv_input} PV to go.</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="b-warn">🎯 Build your personal base first. Focus on Month 1–2 tasks. {FAST - total_val} PV to go.</div>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # ── Daily best practices ───────────────────────────────
+    # ── Daily actions checklist ────────────────────────────
     st.markdown('<div class="sl">◈ &nbsp; Non-Negotiable Daily Actions</div>', unsafe_allow_html=True)
     st.markdown('<div class="gc"><div class="gc-label">— Daily Operating Rhythm —</div>', unsafe_allow_html=True)
 
-    daily_tasks = [
-        "Share value content on WhatsApp Status (products / team wins)",
-        "Send 2–3 personalised follow-up messages (use Script Engine)",
-        "Read or listen to 15 min of personal development",
-        "Check in with one downline member — support their activity",
-        "Log today's plans shown and webinars in the dashboard",
+    daily = [
+        "Share value content on WhatsApp Status (products or team wins)",
+        "Send 2–3 personalised follow-up messages using the Script Engine",
+    "Read or listen to 15 minutes of personal development",
+        "Check in with one downline member — offer support",
+        "Log today's plans shown and webinars in the tracker above",
     ]
-    for i, task in enumerate(daily_tasks):
-        ck_key = f"daily_{i}"
-        if ck_key not in st.session_state.checks:
-            st.session_state.checks[ck_key] = False
-        st.session_state.checks[ck_key] = st.checkbox(task, value=st.session_state.checks[ck_key], key=f"ck_daily_{i}")
+    done = 0
+    for i, task in enumerate(daily):
+        ck = f"daily_{i}"
+        if ck not in st.session_state.checks:
+            st.session_state.checks[ck] = False
+        val = st.checkbox(task, value=st.session_state.checks[ck], key=f"cb_daily_{i}")
+        st.session_state.checks[ck] = val
+        if val: done += 1
 
-    done = sum(1 for i in range(len(daily_tasks)) if st.session_state.checks.get(f"daily_{i}", False))
-    if done == len(daily_tasks):
-        st.markdown('<div class="b-success">✅ Perfect day! All 5 daily actions complete.</div>', unsafe_allow_html=True)
+    if done == len(daily):
+        st.markdown('<div class="b-success">✅ All 5 daily actions complete. Excellent consistency.</div>', unsafe_allow_html=True)
     else:
-        st.markdown(f'<div class="b-warn">{done}/{len(daily_tasks)} actions done today. Consistency is the only strategy.</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="b-warn">{done}/{len(daily)} actions complete today. Consistency builds the business.</div>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════════════
-# TAB 3 — 6-MONTH BLUEPRINT
+# TAB 4 — 6-MONTH BLUEPRINT
 # ═══════════════════════════════════════════════════════════════
-with tabs[2]:
+with tabs[3]:
     st.markdown('<div class="sl">◈ &nbsp; 6-Month Blueprint Engine</div>', unsafe_allow_html=True)
 
-    for phase_idx, phase in enumerate(BLUEPRINT):
+    for pidx, phase in enumerate(BLUEPRINT):
         st.markdown(f"""
-        <div class="bp-month">
-          <div class="bp-month-title">◈ {phase['phase']} — {phase['title']}</div>
+        <div class="bp-phase">
+          <div class="bp-phase-header">◈ &nbsp;{phase['phase']} — {phase['title']}</div>
           <div class="bp-tag">{phase['tag']}</div>
-          <div style="font-size:0.83rem;color:rgba(52,211,153,0.65);margin-bottom:0.8rem;
-            font-family:'IBM Plex Mono',monospace;font-size:0.68rem;line-height:1.5">
-            🎯 Goal: {phase['goal']}
-          </div>
+          <div class="bp-goal">🎯 Goal: {phase['goal']}</div>
         </div>
         """, unsafe_allow_html=True)
 
-        completed = 0
-        for task_idx, task in enumerate(phase["tasks"]):
-            ck_key = f"bp_{phase_idx}_{task_idx}"
-            if ck_key not in st.session_state.checks:
-                st.session_state.checks[ck_key] = False
-            val = st.checkbox(task, value=st.session_state.checks[ck_key], key=f"cb_{ck_key}")
-            st.session_state.checks[ck_key] = val
-            if val:
-                completed += 1
+        done_p = 0
+        for tidx, task in enumerate(phase["tasks"]):
+            ck = f"bp_{pidx}_{tidx}"
+            if ck not in st.session_state.checks:
+                st.session_state.checks[ck] = False
+            val = st.checkbox(task, value=st.session_state.checks[ck], key=f"cb_bp_{pidx}_{tidx}")
+            st.session_state.checks[ck] = val
+            if val: done_p += 1
 
-        total = len(phase["tasks"])
-        pct   = round(completed / total * 100) if total else 0
+        total_t = len(phase["tasks"])
+        pct_p   = round(done_p / total_t * 100) if total_t else 0
+        bar_cls = "pv-bar-gold" if pct_p == 100 else "pv-bar-teal"
+
         st.markdown(f"""
-        <div style="margin:0.5rem 0 1.2rem">
+        <div style="margin:0.6rem 0 1.4rem">
           <div class="pv-bar-wrap">
-            <div class="pv-bar-fill" style="width:{pct}%"></div>
+            <div class="{bar_cls}" style="width:{pct_p}%"></div>
           </div>
           <div class="pv-legend">
-            <span>{completed}/{total} tasks</span>
-            <span>{pct}% complete</span>
+            <span>{done_p}/{total_t} tasks</span>
+            <span>{pct_p}% complete</span>
           </div>
         </div>
         """, unsafe_allow_html=True)
 
-        if pct == 100:
-            st.markdown(f'<div class="b-success">✅ {phase["phase"]} complete! Move to the next phase.</div>', unsafe_allow_html=True)
+        if pct_p == 100:
+            st.markdown(f'<div class="b-success">✅ {phase["phase"]} complete. Advance to the next phase.</div>', unsafe_allow_html=True)
 
         st.markdown('<div class="sdiv"></div>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="gc" style="text-align:center">
-      <div class="gc-label">— Blueprint Reminder —</div>
-      <div style="font-size:0.85rem;color:rgba(52,211,153,0.55);line-height:1.75">
+      <div class="gc-label">— Core Principle —</div>
+      <div style="font-size:0.85rem;color:rgba(148,163,184,0.55);line-height:1.8">
         Consistency over intensity.<br>
-        One genuine conversation per day beats 10 rushed pitches.<br>
-        This is a business — treat it like one.
+        One genuine conversation daily beats ten rushed pitches.<br>
+        Build a business — treat it like one.
       </div>
     </div>
     """, unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════════════
-# TAB 4 — SETTINGS
+# TAB 5 — SETTINGS
 # ═══════════════════════════════════════════════════════════════
-with tabs[3]:
+with tabs[4]:
     st.markdown('<div class="sl">◈ &nbsp; Settings</div>', unsafe_allow_html=True)
-    st.markdown('<div class="gc"><div class="gc-label">— App Configuration —</div>', unsafe_allow_html=True)
-
+    st.markdown('<div class="gc"><div class="gc-label">— Platform Roadmap —</div>', unsafe_allow_html=True)
     st.markdown("""
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;
-      color:rgba(52,211,153,0.4);letter-spacing:0.06em;line-height:2.1">
-      ◈ &nbsp; Supabase Auth &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase 2 (coming next)<br>
-      ◈ &nbsp; User Profile &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase 2<br>
-      ◈ &nbsp; AI Script Engine &nbsp;&nbsp; Backend API — Phase 3<br>
-      ◈ &nbsp; Razorpay / Paywall &nbsp; Phase 4<br>
-      ◈ &nbsp; Notification Suite &nbsp; Phase 4
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;
+      color:rgba(100,116,139,0.8);letter-spacing:0.05em;line-height:2.2">
+      ✅ &nbsp; Script Engine &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase 1 · Live<br>
+      ✅ &nbsp; Product Finder &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase 1 · Live<br>
+      ✅ &nbsp; PV Dashboard &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase 1 · Live<br>
+      ✅ &nbsp; 6-Month Blueprint &nbsp;&nbsp;&nbsp; Phase 1 · Live<br>
+      ◈ &nbsp;&nbsp; Supabase Auth &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase 2 · Next<br>
+      ◈ &nbsp;&nbsp; Persistent Data &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase 2 · Next<br>
+      ◈ &nbsp;&nbsp; AI Script Engine &nbsp;&nbsp;&nbsp;&nbsp; Phase 3 · Planned<br>
+      ◈ &nbsp;&nbsp; Razorpay Paywall &nbsp;&nbsp;&nbsp;&nbsp; Phase 4 · Planned
     </div>
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="sl">◈ &nbsp; Reset Session Data</div>', unsafe_allow_html=True)
-    if st.button("⚠ Reset All Trackers", type="secondary", use_container_width=True, key="reset_btn"):
-        for k in ["plans_shown", "webinars", "month_pv", "total_pv", "generated_script", "checks"]:
+    st.markdown('<div class="sl">◈ &nbsp; Session Management</div>', unsafe_allow_html=True)
+    if st.button("⚠  Reset All Session Trackers", type="secondary", use_container_width=True, key="reset_btn"):
+        for k in list(st.session_state.keys()):
             del st.session_state[k]
         st.rerun()
+    st.markdown('<div class="b-warn">⚠ Reset clears all progress and tracker data for this session. Persistent saving requires Supabase (Phase 2).</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="b-warn">⚠ Reset clears all session data including blueprint progress. This cannot be undone until Supabase persistence is added in Phase 2.</div>', unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════
 # FOOTER
 # ═══════════════════════════════════════════════════════════════
 st.markdown("""
-<div class="gl-footer">
-  VHQ · GROWTHLINE &nbsp;·&nbsp; PHASE 1 CORE MATRIX
-  &nbsp;·&nbsp; VESTIGE EDITION &nbsp;·&nbsp; 2025
+<div class="vhq-footer">
+  VHQ · GROWTHLINE &nbsp;·&nbsp; VESTIGE EDITION &nbsp;·&nbsp; PHASE 1 CORE MATRIX &nbsp;·&nbsp; 2025<br>
+  Product recommendations are for informational purposes only — not medical advice.
 </div>
 """, unsafe_allow_html=True)
